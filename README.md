@@ -65,22 +65,67 @@ This AI-powered marketing agency assistant is designed to help businesses and in
     ```
 
 4. **Set up Google Cloud credentials**
+   
+   **Step 4a: Authenticate with Google Cloud**
    ```bash
-   # Authenticate with Google Cloud
+   # Authenticate with Google Cloud (opens browser for login)
    gcloud auth login
    
-   # Set your project
+   # Verify authentication
+   gcloud auth list
+   ```
+   
+   **Step 4b: Set your project**
+   ```bash
+   # Replace YOUR_PROJECT_ID with your actual project ID
    gcloud config set project YOUR_PROJECT_ID
    
-   # Enable required APIs
+   # Verify project is set correctly
+   gcloud config get-value project
+   ```
+   
+   **Step 4c: Enable required APIs**
+   ```bash
+   # Enable Vertex AI API (for image generation)
    gcloud services enable aiplatform.googleapis.com
+   
+   # Enable Generative Language API (for text generation)
    gcloud services enable generativelanguage.googleapis.com
+   
+   # Verify APIs are enabled
+   gcloud services list --enabled --filter="name:aiplatform OR name:generativelanguage"
+   ```
+   
+   **Step 4d: Set up Application Default Credentials**
+   ```bash
+   # Set up application default credentials
+   gcloud auth application-default login
    ```
 
 5. **Configure environment variables**
-   Create a `.env` file in the project root:
-        ```bash
-   GOOGLE_CLOUD_PROJECT=your-project-id
+   
+   Create a `.env` file in the project root directory:
+   ```bash
+   # Create the .env file
+   touch .env
+   ```
+   
+   Add the following content to your `.env` file:
+   ```bash
+   # Google Cloud Configuration
+   GOOGLE_CLOUD_PROJECT=your-actual-project-id
+   GOOGLE_CLOUD_LOCATION=us-central1
+   ```
+   
+   **Important Notes:**
+   - Replace `your-actual-project-id` with your actual Google Cloud Project ID
+   - You can find your Project ID in the Google Cloud Console dashboard
+   - Common locations include: `us-central1`, `us-east1`, `europe-west1`, `asia-southeast1`
+   - The `.env` file is already included in `.gitignore` to keep your credentials secure
+   
+   **Example .env file:**
+   ```bash
+   GOOGLE_CLOUD_PROJECT=my-marketing-agency-project-123
    GOOGLE_CLOUD_LOCATION=us-central1
    ```
 
@@ -273,6 +318,62 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENS
 - Built with Google's Ads Development Kit (ADK)
 - Powered by Gemini AI models
 - Uses Vertex AI for image generation
+
+## 🔧 Troubleshooting
+
+### Common Issues and Solutions
+
+**Issue: "ModuleNotFoundError: No module named 'google'"**
+```bash
+# Solution: Make sure you're in the poetry environment
+poetry shell
+poetry install
+```
+
+**Issue: "Authentication failed" or "Permission denied"**
+```bash
+# Solution: Re-authenticate with Google Cloud
+gcloud auth login
+gcloud auth application-default login
+```
+
+**Issue: "Project not found" or "API not enabled"**
+```bash
+# Solution: Verify your project and enable APIs
+gcloud config get-value project
+gcloud services enable aiplatform.googleapis.com
+gcloud services enable generativelanguage.googleapis.com
+```
+
+**Issue: "Environment variables not found"**
+```bash
+# Solution: Check your .env file exists and has correct values
+ls -la .env
+cat .env
+```
+
+**Issue: "Image generation failed"**
+- Ensure Vertex AI API is enabled
+- Check that your project has billing enabled
+- Verify the location in your .env file matches your project's region
+
+**Issue: "Poetry command not found"**
+```bash
+# Solution: Install Poetry
+curl -sSL https://install.python-poetry.org | python3 -
+# Or on macOS with Homebrew:
+brew install poetry
+```
+
+### Getting Help
+
+If you encounter issues not covered here:
+1. Check the [GitHub Issues](https://github.com/adnanakbr/enhanced-marketing-agent/issues) page
+2. Create a new issue with:
+   - Your operating system
+   - Python version (`python3 --version`)
+   - Error message (full traceback)
+   - Steps you've already tried
 
 ## 📞 Support
 
